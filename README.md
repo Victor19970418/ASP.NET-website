@@ -1,5 +1,5 @@
 # ASP.NET-website
-** BuildSchool作品**  
+**BuildSchool作品**  
 參與實作及就業導向的軟體開發學校(buildschool)，最後和團隊成員共同開發一個電商網站，包含前台、購物車、後台、綠界金流串接  
 ．使用Asp.net開發  
 ．後臺管理的頁面使用Vue.js框架開發  
