@@ -1,0 +1,293 @@
+﻿
+@{
+    ViewData["Title"] = "折扣券管理";
+
+}
+
+
+<div id="ticket">
+    <h2><b-badge variant="secondary">折扣券管理</b-badge></h2>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item w-50 text-center" role="presentation">
+            <a class="nav-link active fs-4 fw-bold" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                <i class="far fa-clipboard"></i>
+                未發送折扣券
+            </a>
+        </li>
+        <li class="nav-item w-50 text-center" role="presentation">
+            <a class="nav-link fs-4 fw-bold" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                <i class="fas fa-clipboard-check"></i>
+                已發送折扣券
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane bg-white fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <template>
+                <b-container fluid>
+                    <b-row>
+                        <b-col lg="9" class="my-1">
+                            <b-button-group>
+                                <b-button variant="danger" class="" v-b-modal.modal-1>
+                                    <i class="far fa-plus-square mr-2"></i>
+                                    新增折扣券
+                                </b-button>
+                            </b-button-group>
+                        </b-col>
+                        <b-col lg="3" class="my-1">
+                            <b-form-group label="關鍵字"
+                                          label-for="unfilter-input"
+                                          label-cols-sm="3"
+                                          label-align-sm="right"
+                                          label-size="sm"
+                                          class="m-1">
+                                <b-input-group size="sm">
+                                    <b-form-input id="unfilter-input"
+                                                  v-model="unFilter"
+                                                  type="search"
+                                                  placeholder="請輸入關鍵字">
+                                    </b-form-input>
+                                    <b-input-group-append>
+                                        <b-button :disabled="!unFilter" v-on:click="unFilter = ''">清除</b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                    <template>
+                        <div>
+                            <b-table :items="unsendTickets" :busy="isBusy" :fields="unfields" class="mt-3" hover :head-variant="headVariant" :fixed="fixed" :current-page="uncurrentPage" :per-page="unperPage" :filter="unFilter" :filter-included-fields="filterOn">
+                                <template #table-busy>
+                                    <div class="text-center text-danger my-2">
+                                        <b-spinner class="align-middle"></b-spinner>
+                                        <strong>Loading...</strong>
+                                    </div>
+                                </template>
+                                <template #cell(editor)="row">
+
+                                    <b-button v-on:click="infoEdit(row.item, row.index, $event.target)" class="mr-1" variant="primary">
+                                        編輯
+                                    </b-button>
+                                </template>
+
+                                <template #cell(Send)="row">
+
+                                    <b-button v-on:click="info(row.item, row.index, $event.target)" class="mr-1" variant="warning">
+                                        未發送
+                                    </b-button>
+                                </template>
+                            </b-table>
+                        </div>
+                    </template>
+                    <b-row>
+                        <b-col lg="9" class="my-1">
+                            <b-pagination v-model="uncurrentPage"
+                                          :total-rows="untotalRows"
+                                          :per-page="unperPage"
+                                          align="center"
+                                          size="sm"
+                                          class="my-0">
+                            </b-pagination>
+                        </b-col>
+                        <b-col lg="3" class="my-1">
+                            <b-form-group label="每頁顯示筆數" label-for="per-page-select"
+                                          label-cols-sm="3" label-cols-lg="9" content-cols="3"
+                                          label-align-sm="right" label-size="sm" class="mb-0">
+                                <b-form-select id="per-page-select" v-model="unperPage"
+                                               :options="unpageOptions" size="sm"></b-form-select>
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                </b-container>
+            </template>
+        </div>
+        <div class="tab-pane bg-white fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <template>
+                <b-container fluid>
+                    <b-row>
+                        <b-col lg="9" class="my-1">
+                           
+                        </b-col>
+                        <b-col lg="3" class="my-1">
+                            <b-form-group label="關鍵字"
+                                          label-for="filter-input"
+                                          label-cols-sm="3"
+                                          label-align-sm="right"
+                                          label-size="sm"
+                                          class="m-1">
+                                <b-input-group size="sm">
+                                    <b-form-input id="filter-input"
+                                                  v-model="Filter"
+                                                  type="search"
+                                                  placeholder="請輸入關鍵字">
+                                    </b-form-input>
+                                    <b-input-group-append>
+                                        <b-button :disabled="!Filter" v-on:click="Filter = ''">清除</b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                    <div>
+                        <b-table :items="sendTickets" :busy="isBusy" :fields="fields" class="mt-3" hover :head-variant="headVariant" :fixed="fixed" :current-page="currentPage" :per-page="perPage" :filter="Filter" :filter-included-fields="filterOn">
+                            <template #table-busy>
+                                <div class="text-center text-danger my-2">
+                                    <b-spinner class="align-middle"></b-spinner>
+                                    <strong>Loading...</strong>
+                                </div>
+                            </template>
+                            <template #cell(Send)="row">
+
+                                <b-button v-on:click="info(row.item, row.index, $event.target)" class="mr-1" disabled>
+                                    已發送
+                                </b-button>
+                            </template>
+                        </b-table>
+                    </div>
+
+                    <b-row>
+                        <b-col lg="9" class="my-1">
+                            <b-pagination v-model="currentPage"
+                                          :total-rows="totalRows"
+                                          :per-page="perPage"
+                                          align="center"
+                                          size="sm"
+                                          class="my-0">
+                            </b-pagination>
+                        </b-col>
+                        <b-col lg="3" class="my-1">
+                            <b-form-group label="每頁顯示筆數" label-for="per-page-select"
+                                          label-cols-sm="3" label-cols-lg="9" content-cols="3"
+                                          label-align-sm="right" label-size="sm" class="mb-0">
+                                <b-form-select id="per-page-select" v-model="perPage"
+                                               :options="pageOptions" size="sm"></b-form-select>
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                </b-container>
+            </template>
+        </div>
+
+    </div>
+
+    <b-modal id="modal-1" title="新增折扣卷">
+
+        <b-form-group id="input-group-1" label="TicketName:" label-for="input-1">
+            <b-form-input v-model="TicketForm.ticketName" type="text" placeholder="輸入折扣卷名子"></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-2" label="Discount:" label-for="input-2">
+            <b-form-input id="input-2"
+                          v-model="TicketForm.ticketDiscount"
+                          placeholder="輸入折扣"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-3" label="PayMethod:" label-for="input-3">
+            <b-form-input id="input-3"
+                          v-model="TicketForm.PayMethod"
+                          placeholder="輸入付款方式"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-4" label="ProductType:" label-for="input-4">
+            <b-form-input id="input-4"
+                          v-model="TicketForm.ProductType"
+                          placeholder="輸入可使用課程類別"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-5" label="UseTime:" label-for="input-5">
+            <b-form-input id="input-5"
+                          v-model="TicketForm.UseTime"
+                          placeholder="輸入可使用次數"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="TicketDate:" label-for="input-6">
+            <b-form-input id="input-6"
+                          v-model="TicketForm.ticketDate"
+                          placeholder="輸入期限"
+                          required
+                          type="date"></b-form-input>
+        </b-form-group>
+
+        <template #modal-footer="{ ok, cancel }">
+            <b-button variant="danger" v-on:click="cancel()">
+                取消
+            </b-button>
+            <b-button variant="success" v-on:click="ok();postTicket()">
+                新增
+            </b-button>
+        </template>
+    </b-modal>
+
+
+    @*更新積分券*@
+    <b-modal :id="infoModalEdit.id" :title="infoModalEdit.title" v-on:hide="resetInfoModal">
+        <b-form-group id="input-group-1" label="修改折扣" label-for="input-1">
+            <b-form-input id="input-1"
+                          v-model="UpdateForm.ticketDiscount"
+                          placeholder="輸入折扣"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-2" label="修改付款方式" label-for="input-2">
+            <b-form-input id="input-2"
+                          v-model="UpdateForm.ticketPayMethod"
+                          placeholder="輸入付款方式"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-3" label="修改可購買課程種類" label-for="input-3">
+            <b-form-input id="input-3"
+                          v-model="UpdateForm.ticketProductType"
+                          placeholder="輸入購買課程種類"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-4" label="修改可使用次數" label-for="input-4">
+            <b-form-input id="input-4"
+                          v-model="UpdateForm.ticketUseTime"
+                          placeholder="輸入可使用次數"
+                          required
+                          type="text"></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="修改使用期限" label-for="input-3">
+            <b-form-input id="input-3"
+                          v-model="UpdateForm.ticketDate"
+                          placeholder="輸入期限"
+                          required
+                          type="date"></b-form-input>
+        </b-form-group>
+
+        <template #modal-footer="{ ok, cancel }">
+            <b-button variant="secondary" v-on:click="cancel()">
+                取消
+            </b-button>
+            <b-button variant="primary" v-on:click="ok();upDateTicket()">
+                更新
+            </b-button>
+        </template>
+    </b-modal>
+
+    <!-- Main table element -->
+    <b-modal :id="infoModal.id" :title="infoModal.title" v-on:hide="resetInfoModal">
+        <pre class="fs-3">{{ infoModal.content }}</pre>
+        <template #modal-footer="{ ok, cancel }">
+            <b-button variant="danger" v-on:click="cancel()">
+                取消
+            </b-button>
+            <b-button variant="success" v-on:click="ok();sendPoint(infoModal.ticketId)">
+                發送
+            </b-button>
+        </template>
+    </b-modal>
+
+    @*</b-container>*@
+</div>
+
+

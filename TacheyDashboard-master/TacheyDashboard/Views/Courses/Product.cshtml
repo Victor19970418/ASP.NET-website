@@ -1,0 +1,390 @@
+﻿@{
+    ViewData["Title"] = "課程產品管理";
+}
+@section topCss{
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Custom CSS -->
+    <style>
+        pre {
+            font-size: 18px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        div {
+            word-wrap: break-word;
+        }
+
+        img {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        .aText, .aText:hover {
+            text-decoration: none;
+            color: white;
+        }
+
+        .table > :not(:last-child) > :last-child > *, .dataTable-table > :not(:last-child) > :last-child > * {
+            padding: 8px;
+        }
+
+        tr:nth-of-type(even) td {
+            background: whitesmoke;
+        }
+
+        tr:hover td {
+            background-color: lightgray;
+        }
+    </style>
+}
+
+
+@section topJs{
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"
+            crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+    <!-- Load the following for BootstrapVueIcons support -->
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+}
+
+<div id="app" v-cloak>
+    <h2><b-badge variant="secondary">課程產品管理</b-badge></h2>
+    <b-container fluid>
+        <!-- User Interface controls -->
+        <b-row>
+            <!-- 排序 -->
+            <b-col lg="6" class="my-1">
+                <b-form-group label="排序" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right"
+                              label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
+                    <b-input-group size="sm">
+                        <b-form-select id="sort-by-select" v-model="sortBy" :options="sortOptions"
+                                       :aria-describedby="ariaDescribedby" class="w-75">
+                            <template #first>
+                                <option value="">-- 未選擇 --</option>
+                            </template>
+                        </b-form-select>
+
+                        <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby"
+                                       size="sm" class="w-25">
+                            <option :value="false">Asc</option>
+                            <option :value="true">Desc</option>
+                        </b-form-select>
+                    </b-input-group>
+                </b-form-group>
+            </b-col>
+
+            <!-- 搜尋 -->
+            <b-col lg="6" class="my-1">
+                <b-form-group label="搜尋"
+                              label-for="filter-input"
+                              label-cols-sm="3"
+                              label-align-sm="right"
+                              label-size="sm"
+                              class="mb-0">
+                    <b-input-group size="sm">
+                        <b-form-input id="filter-input"
+                                      v-model="filter"
+                                      type="search"
+                                      placeholder="Search"></b-form-input>
+
+                        <b-input-group-append>
+                            <b-button :disabled="!filter" v-on:click="filter = ''">清除</b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </b-form-group>
+            </b-col>
+
+            <!-- 每頁顯示 -->
+            <b-col sm="5" md="6" class="my-1">
+                <b-form-group label="每頁顯示" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
+                              label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
+                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm">
+                    </b-form-select>
+                </b-form-group>
+            </b-col>
+
+            <!-- 分類顯示 -->
+            <b-col sm="5" md="6" class="my-1">
+                <div class="row">
+                    <label class="col-sm-3 col-form-label col-form-label-sm text-sm-right">分類</label>
+                    <div class="col-9">
+                        <b-button v-for="btn in category" class="m-1" v-on:click="Categoryfliter(btn.CategoryName)">{{btn.CategoryName}}</b-button>
+                        <b-button class="m-1 btn btn-success" v-on:click="Categoryfliter('all')">顯示全部</b-button>
+                    </div>
+                </div>
+            </b-col>
+
+
+        </b-row>
+
+        <!-- Main table element -->
+        <b-table :items="items" :fields="fields" :head-variant="headVariant" :current-page="currentPage" :per-page="perPage" :filter="filter"
+                 :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+                 :sort-direction="sortDirection" stacked="md" show-empty small v-on:filtered="onFiltered" class="mt-3">
+
+            <template #cell(actions)="row">
+                <b-button size="sm" v-on:click="info(row.item, row.index, $event.target)" class="m-1">
+                    審核課程
+                </b-button>
+            </template>
+        </b-table>
+
+        <!-- 分頁 -->
+        <b-col sm="7" md="6" class="my-1">
+            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill"
+                          size="sm" class="my-0"></b-pagination>
+        </b-col>
+
+        <!-- Info modal -->
+        <b-modal :id="infoModal.id" size="xl" :title="infoModal.title" ok-only v-on:hide="resetInfoModal" scrollable>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.Title}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.CategoryName}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.DetailName}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.Description}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">
+                                <div>封面圖片:</div>
+                                <img :src="infoModal.TitlePageImageUrl" alt="未上傳圖片" />
+                            </div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">
+                                <div>行銷圖片:</div>
+                                <img :src="infoModal.MarketingImageUrl" alt="未上傳圖片" />
+                            </div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.Tool}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.CourseLevel}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.Effect}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.TotalMinTime}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.LecturerIdentity}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.CustomUrl}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.OriginalPrice}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">{{infoModal.CreateVerify}}</div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">
+                                <div>預覽影片 :</div>
+                                <iframe name="VideoIframe" width="500" height="300" :src="infoModal.PreviewVideo"
+                                        title="video player" frameborder="0"
+                                        scrolling="no"
+                                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center align-items-center">
+                            <div class="p-2">
+                                <div>章節 :</div>
+                                <div class="row">
+                                    @*<div v-for="result in infoModal.ChapterId">{{result}}</div>
+                                        <div v-for="result in infoModal.ChapterName">{{result}}</div>*@
+                                    <div v-for="(result,index) in infoModal.ChapterId">
+                                        第{{result}}章
+                                        <div>{{infoModal.ChapterName[index]}}</div>
+                                        <br />
+                                    </div>
+                                </div>
+                                <div>單元 :</div>
+                                <div v-for="(result,index) in infoModal.UnitId">
+                                    單元 {{result}}
+                                    <div>{{infoModal.UnitName[index]}}</div>
+                                    <iframe name="VideoIframe" width="500" height="300" :src="infoModal.CourseUrl[index]"
+                                            title="video player" frameborder="0"
+                                            scrolling="no"
+                                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-12 px-3 pt-2 pb-4">
+                            詳細的課程內容
+                        </div>
+                        <hr>
+                        <div v-html="infoModal.Introduction" class="col-12">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <template #modal-footer>
+                <div class="w-100">
+                    <p class="float-left ml-3" style="color:red">請仔細審視內容</p>
+                    <b-button variant="danger"
+                              size="sm"
+                              class="float-right m-1"
+                              v-on:click="sentjudge(false)">
+                        不通過
+                    </b-button>
+                    <b-button variant="success"
+                              size="sm"
+                              class="float-right m-1"
+                              v-on:click="sentjudge(true)">
+                        通過
+                    </b-button>
+                </div>
+            </template>
+        </b-modal>
+    </b-container>
+</div>
+
+@section endJs{
+    <script>
+        var source = @Html.Raw(ViewBag.Labels);
+        var categoryName = @Html.Raw(ViewBag.categoryName);
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                items: source,
+                category: categoryName,
+                fields: [
+                    { key: 'CourseId', label: '課程Id', sortable: false, },
+                    { key: 'Title', label: '課程標題', sortable: false, },
+                    { key: 'OriginalPrice', label: '原價', sortable: true, sortDirection: 'desc', },
+                    { key: 'TotalMinTime', label: '課程長度', sortable: true, sortDirection: 'desc', },
+                    { key: 'CategoryName', label: '類別', sortable: true, sortDirection: 'desc', },
+                    { key: 'MainClick', label: '點擊數', sortable: true, sortDirection: 'desc', },
+                    { key: 'CreateVerify', label: '狀態', sortable: true, sortDirection: 'desc', },
+                    { key: 'actions', label: '', sortable: false }
+                ],
+                headVariant: 'dark',
+                totalRows: 1,
+                currentPage: 1,
+                perPage: 10,
+                pageOptions: [10, 30, 50, 150, { value: 1000, text: "Show a lot" }],
+                sortBy: '',
+                sortDesc: false,
+                sortDirection: 'Desc',
+                filter: null,
+                filterOn: [],
+                filterincludedfields: [],
+                infoModal: {
+                    id: 'info-modal',
+                    title: '',
+                    content: ''
+                }
+            },
+            computed: {
+                sortOptions() {
+                    return this.fields
+                        .filter(f => f.sortable)
+                        .map(f => {
+                            return { text: f.label, value: f.key }
+                        })
+                }
+            },
+            mounted() {
+                // Set the initial number of items
+                this.totalRows = this.items.length
+            },
+            methods: {
+                info(item, index, button) {
+                    this.infoModal.CourseId = item.CourseId
+                    this.infoModal.title = `${item.CourseId} - ${item.Title}`
+                    this.infoModal.Title = `課程標題 : ${item.Title}`
+                    this.infoModal.Description = `內容描述 : ${item.Description}`
+                    this.infoModal.TitlePageImageUrl = `${item.TitlePageImageUrl}`
+                    this.infoModal.MarketingImageUrl = `${item.MarketingImageUrl}`
+                    this.infoModal.Tool = `上課工具(軟體，材料) : ${item.Tool}`
+                    this.infoModal.CourseLevel = `課程適合的門檻 : ${item.CourseLevel}`
+                    this.infoModal.Effect = `學習成效 : ${item.Effect}`
+                    this.infoModal.CoursePerson = `適合的族群 : ${item.CoursePerson}`
+                    this.infoModal.OriginalPrice = `定價 : ${item.OriginalPrice}`
+                    this.infoModal.TotalMinTime = `課程總長度 : ${item.TotalMinTime}`
+                    this.infoModal.LecturerIdentity = `開課會員身份 : ${item.LecturerIdentity}`
+                    this.infoModal.CategoryName = `分類 : ${item.CategoryName}`
+                    this.infoModal.DetailName = `細項 : ${item.DetailName}`
+                    this.infoModal.CreateVerify = `審核狀態 : ${item.CreateVerify == true ? "審核通過" : "審核不通過"}`
+                    this.infoModal.CustomUrl = `課製化網址 : ${item.CustomUrl}`
+                    this.infoModal.PreviewVideo = `${item.PreviewVideo}`
+                    this.infoModal.Introduction = `${item.Introduction}`
+
+                    this.infoModal.ChapterId = [];
+                    this.infoModal.ChapterName = [];
+                    this.infoModal.UnitId = [];
+                    this.infoModal.UnitName = [];
+                    this.infoModal.CourseUrl = [];
+                    item.courseChapters.forEach(x => this.infoModal.ChapterId.push(x.ChapterId));
+                    item.courseChapters.forEach(x => this.infoModal.ChapterName.push(x.ChapterName));
+                    item.courseUnits.forEach(x => this.infoModal.UnitId.push(x.UnitId));
+                    item.courseUnits.forEach(x => this.infoModal.UnitName.push(x.UnitName));
+                    item.courseUnits.forEach(x => this.infoModal.CourseUrl.push(x.CourseUrl));
+
+                    this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+                },
+                resetInfoModal() {
+                    this.infoModal.title = ''
+                    this.infoModal.content = ''
+                },
+                onFiltered(filteredItems) {
+                    // Trigger pagination to update the number of buttons/pages due to filtering
+                    this.totalRows = filteredItems.length
+                    this.currentPage = 1
+                },
+                sentjudge(judge) {
+                    $.ajax({
+                        url: `/Courses/Verify?CourseId=${this.infoModal.CourseId}&CreateVerify=${judge}`,
+                        type: "GET",
+                        success: function () {
+                            window.location.reload();
+                        }
+                    })
+                },
+                Categoryfliter(name) {
+                    if (name == 'all') {
+                        this.items = source;
+                        this.totalRows = this.items.length
+                    }
+                    else {
+
+                        this.items = source;
+                        this.items = this.items.filter(x => x.CategoryName == name);
+                        this.totalRows = this.items.length;
+                    }
+
+                }
+
+            }
+        });
+    </script>
+}

@@ -1,0 +1,109 @@
+﻿@model Tachey001.ViewModel.Course.StepGroup
+
+@*@using (Html.BeginForm("Step", "Courses", new { id = ViewBag.Id, CourseId = ViewBag.CourseId }))
+{
+    @Html.AntiForgeryToken()*@
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-sm-11 m-4">
+                <div class="row text-secondary my-4">
+                    <form action="Step" method="post" id="Step4Form">
+                        @Html.HiddenFor(m => m.course.CourseID)
+                        <div class="col-12 mb-4">
+                            <label for="basic-url"style="color:#1a344b;">定價（最低為 $100 元）</label>
+                            <div class="input-group mb-2">
+                                @Html.EditorFor(m => m.course.OriginalPrice, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "100" } })
+                            </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label for="basic-url"style="color:#1a344b;">預購價格（最低為 $50 元）</label>
+                            <div class="input-group mb-2">
+                                @*<input type="text"
+                class="form-control"
+                id="basic-url"
+                aria-describedby="basic-addon3" />*@
+                                @Html.EditorFor(m => m.course.PreOrderPrice, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "50" } })
+                            </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                            @Html.Partial("_ChoiceForStep", Model.memberGroup)
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label for="basic-url"style="color:#1a344b;">預計課程長度（以分鐘計算，最短 20 分鐘）</label>
+                            <div class="input-group mb-2">
+                                @Html.EditorFor(m => m.course.TotalMinTime, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "20" } })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <input onclick="postStep(4)" type="button" value="下一步" class="btn btn-outline-secondary btn-lg px-5">
+            </div>
+            <div class="col-lg-4 col-sm-11 m-3 text-black-50 text-justify">
+                <div class="row bg-light-gray px-3">
+                    <div class="row p-4">
+                        <h6 class="my-3">
+                            <i class="far fa-lightbulb fa-2x hahow-dark-orange mr-2"></i>該怎麼定價？
+                        </h6>
+                        <p class="line-height">
+                            每個領域的專業與銷售方式都不同，我們建議可以多多詢問課程的目標族群，找出雙方都可以接受的價格！
+                        </p>
+                        <a href=""
+                           class="
+                  w-100
+                  text-right text-secondary text-decoration-none
+                  my-3
+                ">>> 需要定價協助</a>
+                    </div>
+                    <div class="row p-4">
+                        <h6 class="my-3">
+                            <i class="far fa-lightbulb fa-2x hahow-dark-orange mr-2"></i>人數門檻是什麼？
+                        </h6>
+                        <p class="line-height">
+                            Hahow
+                            是透過募資機制來開課的，因此人數門檻就是開課的標準。課程必須等待報名學生超過人數門檻後，才能正式開課！
+                        </p>
+                        <a href=""
+                           class="
+                  w-100
+                  text-right text-secondary text-decoration-none
+                  my-3
+                ">>> 關於募資開課</a>
+                    </div>
+                    <div class="row p-4">
+                        <h6 class="my-3">
+                            <i class="far fa-lightbulb fa-2x hahow-dark-orange mr-2"></i>我在 Hahow 的收入怎麼算？
+                        </h6>
+                        <p class="line-height">
+                            假設學生透過 Hahow
+                            一般網址購買，老師將會得到課程售價的五成。若當月份有 50 人透過
+                            Hahow 一般網址以 100 元的價格購買時，老師可以得到 50 x 100 x 0.5
+                            = 2,500 元的收入（此計算公式不包含雙方共同承擔的營業稅部分）
+                        </p>
+                        <a href=""
+                           class="
+                  w-100
+                  text-right text-secondary text-decoration-none
+                  my-3
+                ">>> 詳細了解分潤機制</a>
+                    </div>
+                    <div class="row p-4">
+                        <h6 class="my-3">
+                            <i class="far fa-lightbulb fa-2x hahow-dark-orange mr-2"></i>備課天數是做什麼用的？
+                        </h6>
+                        <p class="line-height">
+                            這是讓學生在募資期間可以先知道預計課程開始的日期。老師可以提前開課，但不能晚於預計時間開課！
+                        </p>
+                        <a href=""
+                           class="
+                  w-100
+                  text-right text-secondary text-decoration-none
+                  my-3
+                ">>> 關於開課時程表</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@*  *@}

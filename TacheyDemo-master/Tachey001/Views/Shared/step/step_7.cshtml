@@ -1,0 +1,46 @@
+﻿@model Tachey001.ViewModel.Course.StepGroup
+
+@*@using (Html.BeginForm("Step", "Courses", new { id = ViewBag.Id, CourseId = ViewBag.CourseId }))
+{
+    @Html.AntiForgeryToken()*@
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-sm-11 m-4">
+                <form action="Step" method="post" id="Step7Form">
+                    @Html.HiddenFor(m => m.course.CourseID)
+                    <div class="row m-3 mb-5">
+                        <label for="basic-url" class="text-black-50">課程網址（由 1 ~ 10 個小寫英文、數字及 - 組成）</label>
+                        <div class="input-group mb-3">
+                            @Html.EditorFor(m => m.course.CustomUrl, new { htmlAttributes = new { @class = "w-100 form-control", @required = "required" } })
+                        </div>
+                        <label id="msg-box" class="fs-5 w-100" data-CourseID="@ViewBag.CourseId"></label>
+                        <label for="basic-url" class="text-black-50 fs-5" id="basic-url">你可以經由下方網址宣傳課程： https://localhost:44394/Course/cm/@(Model.course.CustomUrl)</label>
+                    </div>
+                </form>
+                <div class="row m-3">
+                    <input type="button" onclick="postStep(7)" value="下一步" class="btn btn-outline-secondary btn-lg px-5" id="url-btn" disabled>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-11 m-3 text-black-50 text-justify">
+                <div class="row bg-light-gray px-3">
+                    <div class="row p-4">
+                        <h6 class="my-3">
+                            <i class="far fa-lightbulb fa-2x hahow-dark-orange mr-2"></i>課程網址是做什麼用的？
+                        </h6>
+                        <p class="line-height">
+                            這個網址是老師可以用來宣傳的網址，所有經由這個網址進入課程的流量都會歸屬於老師的流量喔！
+                        </p>
+                        <a href=""
+                           class="
+                w-100
+                text-right text-secondary text-decoration-none
+                my-3
+              ">>> 課程宣傳管道的判定方式</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@*  *@}

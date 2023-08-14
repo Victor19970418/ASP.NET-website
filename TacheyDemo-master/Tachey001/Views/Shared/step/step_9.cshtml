@@ -1,0 +1,63 @@
+﻿@model Tachey001.ViewModel.Course.StepGroup
+
+<div class="container">
+    <div class="row justify-content-center my-3">
+        <div class="
+          col-11
+          bg-gray
+          p-3
+          d-flex
+          justify-content-center
+          align-items-center
+        ">
+            <div class="text-secondary">
+                <i class="fas fa-check hahow-green mx-2"></i>別擔心，我們都已經幫你存檔了！你隨時都可以暫時離開，之後回來再繼續編輯！
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center" id="StepCheck-Container">
+        @Html.Partial($"_StepCheck", Model)
+    </div>
+    <div class="row justify-content-center text-secondary my-4">
+        <div class="col-6">
+            <div class="row justify-content-center">
+                <span class="text-center">送出審核前，再次檢查提案內容是否符合</span>
+            </div>
+            <div class="row justify-content-center">
+                <span>如此可以加快 Hahow 為你審核的速度，也有助於讓提案更順利地上架募資唷！</span>
+            </div>
+        </div>
+    </div>
+    <div class="row my-5 justify-content-center">
+        <div class="col-10">
+            <div class="row justify-content-center">
+                @if
+                    (
+                    Model.course.Title == null ||
+                    Model.course.Description == null ||
+                    Model.course.CustomUrl == null ||
+                    Model.course.Effect == null ||
+                    Model.course.Tool == null ||
+                    Model.course.TitlePageImageURL == null ||
+                    Model.course.CourseLevel == null ||
+                    Model.course.CoursePerson == null ||
+                    Model.course.Introduction == null ||
+                    Model.course.LecturerIdentity == null ||
+                    Model.courseChapter.Count() == 0 ||
+                    Model.course.PreviewVideo == null
+                    )
+                {
+                    <button type="button" class="btn btn-secondary btn-lg px-5 w-25 mx-3" disabled>
+                        未填寫完成
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-5 w-25 mx-3">
+                        @Html.ActionLink("送出審核", "StepFinish", "Courses", new { CourseId = Model.course.CourseID }, new { @class = "btn-outline-secondary text-decoration-none w-100 h-100" })
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

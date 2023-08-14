@@ -1,0 +1,41 @@
+body {
+  background-color: rgb(243, 243, 241);
+}
+
+.change-btn-checked {
+    background-color: rgb(35 35 26);
+    color: rgb(234 232 230);
+    border: 0px solid;
+}
+
+.change-btn-checked-border {
+    border-bottom: 5px solid rgb(110 60 149);
+}
+
+.change-btn {
+    /*background: linear-gradient( 40deg, rgb(86 86 192) 0%, rgb(119 79 165) 100%);*/
+    background-color: #7c80fa;
+    color: #ffecec;
+    border: 0.4px solid #181717;
+}
+
+.check-b:hover .change-btn {
+    color: #2c2c2c;
+}
+
+.text-black-20 {
+    color: #ccc;
+    background: linear-gradient( 40deg, rgb(86 86 192) 0%, rgb(119 79 165) 100%);
+    border-radius: 21px;
+}
+
+.btn-tape {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.border-bottom-yellow {
+    border-bottom: 0.4px solid #181717
+}

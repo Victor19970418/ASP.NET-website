@@ -1,0 +1,402 @@
+﻿@*最大籃子的型別*@
+@model Tachey001.ViewModel.Card_highlight_Group
+@{var i = 0;
+    ViewBag.Title = "Tachey - 最豐富的線上課程";
+    Layout = "~/Views/Shared/_LayoutHomePage.cshtml";
+   
+}
+
+<!-- 第一塊 -->
+<div class="background-img">
+    <div class="container-fuild">
+        <div class="row  m-0 justify-content-center d-f-direction-c-r">
+            <div class="col-lg-3 search-3">
+                <h1 class="pt-5 search-content mt-2rem">
+                    最有趣的<span class="search-half">線上課程平台</span><br>
+                    學那些學校不會教的事
+                </h1>
+                @using (Html.BeginForm("All", "Courses", FormMethod.Post, new { @class = "form-inline my-2 my-lg-0 d-flex search-form flex-nowrap" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input class="bg-gray border-0 m-0 search-input px-3" type="search" placeholder="今天想學習什麼?" name="Search">
+                    <button class="search-btn"> <i class="fas fa-search px-2"></i></button>
+                }
+                @*<form class="form-inline my-2 my-lg-0 d-flex search-form flex-nowrap">
+                    <input class="bg-gray border-0 m-0 search-input px-3" type="search" placeholder="今天想學習什麼?">
+                    <button class="search-btn"> <i class="fas fa-search px-2"></i></button>
+                </form>*@
+                <div class="search-a-wrap my-2">
+                    <a href="#" class="search-a d-inline-block">優惠此時此課</a>
+                    <a href="#" class="search-a d-inline-block">國際化人才</a>
+                    <a href="#" class="search-a d-inline-block">吳寶春</a>
+                    <a href="#" class="search-a d-inline-block">理財進擊之路</a>
+                    <a href="#" class="search-a d-inline-block">免費資產配置講座</a>
+                </div>
+            </div>
+            <div class="col-lg-5 search-right p-0">
+                @*<img id="search-right-leftbottom-pic" src="~/Assets/img/右圖左下.jpg" alt="">
+                    <img id="search-right-pic" src="~/Assets/img/右圖底部.jpg" alt="">
+                    <a href="#"><img id="search-right-a-pic" src="~/Assets/img/超連結圖.jpg" alt=""></a>
+                    <img id="mascot" src="~/Assets/img/吉祥物.jpg" alt="">*@
+                <img id="" src="https://i.imgur.com/N5yPapV.png" alt="" style="" class="display-n style-t hover-pic">
+            </div>
+        </div>
+    </div>
+    <div class="pic-wrap d-flex justify-content-center">
+        <img id="ug-pic" class="col-4 hover-pic" src="https://media.discordapp.net/attachments/798070653851795466/852454972301901854/5.1.png?width=703&height=645" alt="">
+        <div class="col-8 d-flex flex-column-reverse align-items-center">
+            <h3 class="advertising-text">
+                <span>一些很棒的</span>
+                <span id="advertising-span" class="mx-2">活動消息</span>
+                <span>走過路過別錯過</span>
+            </h3>
+            <h2 class="advertising-text">每周嚴選推薦</h2>
+            <br>
+
+        </div>
+
+    </div>
+</div>
+<!-- 第一塊 -->
+<!-- 第二塊 -->
+@*<div class="container-fuild py-3">
+        <div class="row row-justify-content-center text-center m-0">
+            <div class="col-8 ">
+                <h2 class="advertising-text">每周嚴選推薦</h2>
+            </div>
+            <div class="col-8 my-1">
+                <h3 class="advertising-text">
+                    <span>一些很棒的</span>
+                    <span id="advertising-span" class="mx-2">活動消息</span>
+                    <span>走過路過別錯過</span>
+                </h3>
+            </div>
+        </div>
+    </div>*@
+<!-- 第二塊 -->
+<!-- 輪盤一 -->
+<div class="owl-carousel  pb-5 auto-carousel mt-5">
+    <a href="@Url.Action("Main","Courses", new { id= "03rfzFErpqMi"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627566243/image/%E9%9F%B3%E6%A8%82/pexels-wendy-wei-1677710_hngvl2.jpg"
+                 alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "0r9WGCWxfbzP"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627566241/image/%E9%9F%B3%E6%A8%82/pexels-ludwig-kwan-2378209_jjci7e.jpg"
+                 alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "2fe73XYRo4C1"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627566295/image/%E9%9F%B3%E6%A8%82/pexels-nothing-ahead-3423985_mmugxg.jpg"
+                 alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "6g5Kr6RrN74O"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627567431/image/%E8%AA%9E%E8%A8%80/pexels-pixabay-261859_tqufq4.jpg" alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "6M0pZrcfo4SS"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627567545/image/%E8%AA%9E%E8%A8%80/pexels-aleksandar-pasaric-2339009_o89sb2.jpg"
+                 alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "7k3aMDaOBqQJ"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627568104/image/%E8%AA%9E%E8%A8%80/pexels-pixabay-267669_h5iuxh.jpg" alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "7QmfVoaSH68w"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/dzaevdqyt/image/upload/v1625818757/Course/7QmfVoaSH68w/TitlePageImage.png" alt="">
+        </div>
+    </a>
+    <a href="@Url.Action("Main","Courses", new { id= "8AmfKoaYH33m"})">
+        <div class="item">
+            <img src="https://res.cloudinary.com/tachey/image/upload/v1627568329/image/%E7%A8%8B%E5%BC%8F/pexels-brett-sayles-4508751_ihg6mw.jpg" alt="">
+        </div>
+    </a>
+</div>
+<!-- 輪盤一 -->
+<!-- 第3塊 -->
+<div id="try-watch" class="container-fuild pt-5 ">
+    <div class="row justify-content-center text-center m-0">
+        <div class="col-8 ">
+            <h2 class="trywatch-h2">每日免費試看</h2>
+        </div>
+        <div class="col-8 my-1">
+            <h3 class="trywatch-text">
+                @*<span>一天</span>
+                <span id="trywatch-span" class="mx-2">五試看</span>
+                <span>00 點更新，遇見命定課程在這裡</span>*@
+            </h3>
+        </div>
+    </div>
+</div>
+<!-- 第3塊 -->
+<!-- 影片  owl-theme-->
+<div class="owl-carousel  video-carousel">
+    <div class="item-video">
+        <iframe id="player1" width="636" height="356" src="https://res.cloudinary.com/dzaevdqyt/video/upload/v1625846634/Course/7QmfVoaSH68w/PreviewVideo.mp4?enablejsapi=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        <div class="content text-center">
+            <h4 class="my-2">程式</h4>
+            <a href="@Url.Action("Main","Courses", new { id= "7k3aMDaOBqQJ"})">ASP.NET Core MVC</a>
+            @*<div>
+                <a href="#">
+                    <span>4.87</span>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </a>
+            </div>*@
+        </div>
+    </div>
+    <div class="item-video">
+        <iframe id="player2" width="636" height="356" src="https://res.cloudinary.com/dzaevdqyt/video/upload/v1627902737/Course/8AmfKoaYH33m/PreviewVideo.mp4?enablejsapi=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        <div class="content text-center">
+            <h4 class="my-2">程式</h4>
+            <a href="@Url.Action("Main","Courses", new { id= "8AmfKoaYH33m"})">DBA 訓練營 - SQL Server 資料庫管理入門</a>
+            @*<div>
+                <a href="#">
+                    <span>4.87</span>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </a>
+            </div>*@
+        </div>
+    </div>
+    <div class="item-video">
+        <iframe id="player3" width="636" height="356" src="https://res.cloudinary.com/dzaevdqyt/video/upload/v1627905120/Course/8DwsUsF9kusp/PreviewVideo.mp4?enablejsapi=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        <div class="content text-center">
+            <h4 class="my-2">程式</h4>
+            <a href="@Url.Action("Main","Courses", new { id= "8DwsUsF9kusp"})">精通 Bootstrap 4 - 開發超強不解釋</a>
+            @*<div>
+                <a href="#">
+                    <span>4.87</span>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </a>
+            </div>*@
+        </div>
+    </div>
+    <div class="item-video">
+        <iframe id="player4" width="636" height="356" src="https://res.cloudinary.com/dzaevdqyt/video/upload/v1626107086/Course/aV6KQhxy7wFx/PreviewVideo.mp4?enablejsapi=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        <div class="content text-center">
+            <h4 class="my-2">程式</h4>
+            <a href="@Url.Action("Main","Courses", new { id= "aV6KQhxy7wFx"})">Python</a>
+            <div>
+                @*<a href="#">
+                    <span>4.87</span>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </a>*@
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 影片 -->
+<!-- 課程精選 -->
+<div class="container-fuild py-5">
+    <div class="row justify-content-center text-center m-0">
+        <div class="col-9 ">
+            <h2 class="advertising-textt">Tachey 精選好課程</h2>
+        </div>
+        <div class="col-9 my-1">
+            <h3 class="course-text">
+                <span>精挑細選了一些很棒的課程</span>
+                <span id="advertising-span" class="mx-2">推薦給你</span>
+            </h3>
+        </div>
+        <div class="col-9 ">
+            <div class="owl-carousel    advertising-carousel">
+
+                @*傳過來的大籃子到view都會變成變數Model,要找到裡面的碗都要寫Model.*@
+                @foreach (var item in Model.highlightViewModels)
+                {
+
+                    @Html.Partial("_HomePageCard", item)
+                    @*if (i <= 1)
+            {
+
+                @Html.Partial("_HighlightCardPartial", item) i++;
+            }
+            else
+            { @Html.Partial("_HighlightCardPartial_3", item)}*@
+
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 課程精選 -->
+<!-- 好學生這麼說 -->
+<div id="student-say" class="container pt-5 ">
+    <div class="row justify-content-center text-center m-0">
+        <div class="col-12">
+            <h2 class="trywatch-h2">Tachey 學生這麼說</h2>
+        </div>
+        <div class="col-12 my-1">
+            <h3 class="trywatch-text">
+                <span>超過</span>
+                <span id="studentsay-span" class="mx-2">5000+</span>
+                <span>則真實評論</span>
+            </h3>
+        </div>
+    </div>
+    <div class="row m-0 justify-content-center pb-4">
+        <div class="col-lg-12 d-flex justify-content-around reading-8 flex-wrap p-0">
+            @foreach (var item in Model.commentViewModels)
+            {
+                <div class="col-lg-3 col-12 p-0 height-15rem" style="margin-bottom: 3rem;">
+                    <div class="comment p-4">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAVBAMAAACqMuMoAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAqUExURUdwTAC+owC8pAC+owC/nwC+owC/nwC+owC+pAC+pAC+pAC+owC+pAC+pAQrwd4AAAANdFJOUwClRN8h7xBggL9wj89yAOr7AAAAxUlEQVQY0yWOPQrCUBCE1xj/m9gKQnqb1EJAsLYRUlgEBLGIINhYWAhewMZe8AoeQPACKWIUYzF3cXbfFDt8+3berohI8xCKanPRusdOrZ2+WDMY+TlIfuxoCqUVMF5a88f4AwVB6sBJxAMC/eOIirWDUp8ktuZMsyItYEI7I1KqoVC7uljDYpxPFly3xSfhYaAqjVM3I4SO3pKqBY4qydUi/kIV3EA9eYTR2k16al/pqvGMoQV0dM69PaBk078P7OxRP5Q/PJBxjN9F5jIAAAAASUVORK5CYII="
+                             alt="" class="comment-top-img">
+                        <p class="comment-p font-weight-bold my-2">
+                            @item.ToTachey
+                        </p>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAVBAMAAACqMuMoAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAtUExURUdwTAC9owC+owC/nwC+owC+owC/nwC+pAC+pAC+pAC9owC9owC+pAC+pAC+pN9i5Y0AAAAOdFJOUwCb7yDfPhCAv2CvUG/PuzEMbQAAAMlJREFUGNMljz8OAWEQxZ9gZS0JhVZkC4lG9gQaiVKUqo0jOIGIQiMRJxAnUDiAkIjaFaz1r/DOYN5+U8wvb2bel/cBQb0BK+9cj4D8kKyZOpBvoEDybkMDT9gKI+SENprCHFXh7VQrM/CHmfBAWUjQc6ooEBWn3A0wDrt8Af4iZKoYM3vFqsyPsOdOKCiMYmykjnxaz7l7b2ghZPs6mwVEibxp1VT44pqpfcy7kAMgJvu28pkNY/4ip5aGOJkiUx1hfFVHsJpY/wNR/nhLeHAxeQAAAABJRU5ErkJggg=="
+                             alt="" class="comment-bot-img">
+                        @*<a href="#" class="comment-a"><img src="@item.Photo" alt="" id="user-logo">@item.Name</a>*@
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 好學生這麼說 -->
+<!-- 猜你想學 -->
+<div class="container">
+    <div class="row justify-content-lg-between" style="position:relative;">
+        <div class="recommend-title-wrap d-flex">
+            <img src="~/Assets/img/ufo.png" alt=""
+                 class="recommend-img px-15">
+            <h2 class=" card-h2-title">猜你想學</h2>
+        </div>
+        @*<a href="#" class="more-class" style="position: absolute; right: 0; bottom: 0;">更多熱門課程<i class="fas fa-arrow-right"></i></a>*@
+    </div>
+
+
+
+    <div class="row" id="CardArea">
+        @{
+           
+            var topeight = Model.consoleViewModels.Take(8);
+            foreach (var item in topeight)
+            {
+                item.favorite = Model.GetOwners.Any(x => x.CourseID == item.CourseID);
+
+                @Html.Partial("_CourseCardPartial", item)
+            }
+        }
+       
+
+    </div>
+    <div class="row">
+        <div class="col-12" id="Changetext">
+            <button id="morecourse" class="w-100 btn btn-dark mb-3">更多課程</button>
+        </div>
+    </div>
+
+</div>
+<!-- 猜你想學 -->
+<!-- 本週熱門課程 -->
+<div class="container">
+    <div class="row justify-content-lg-between mb-3">
+        <div class="recommend-title-wrap d-flex">
+            <img src="~/Assets/img/planet.png" alt=""
+                 class="recommend-img px-15">
+            <h2 class=" card-h2-title ">延伸閱讀</h2>
+        </div>
+        @*<a href="#" class="more-class">更多熱門課程<i class="fas fa-arrow-right"></i></a>*@
+    </div>
+    <div class="row">
+        @*資料庫未完成*@
+        @*@Html.Partial("_CourseCardPartial")
+            @Html.Partial("_CourseCardPartial")
+            @Html.Partial("_CourseCardPartial")
+            @Html.Partial("_CourseCardPartial")*@
+    </div>
+</div>
+<!-- 本週熱門課程 -->
+<!-- 延伸閱讀 -->
+<div class="container-fuild reading">
+
+    <div class="container">
+
+        <div class="row m-0">
+
+            <div class="col-12">
+                @*<h4 class="reading-h4 my-3 text-white">延伸閱讀</h4>*@
+            </div>
+
+        </div>
+
+        <div class="row m-0">
+                    <div class="col-4">
+                        <img class="reading-pic" src="~/Assets/img/延伸閱讀圖片1.jpg" alt="">
+                        <h5 class="reading-h5 m-0">零基礎也能自學法文 —— 從文字到 Podcast、影片，免費法語自學</h5>
+                        <span class="d-block reading-date my-2">Dec 10, 2020</span>
+                        <p class="reading-date mb-2 collapse" id="collapseContent1">
+                            語言自學達人 Chihya
+                            繼兩年前自學德文後，又靠著自學建立了法文聽說讀寫的基礎。這篇文章會分享她自學法文的經驗，並提供「以中文、英文、或法文學習法文」的多種教材，如果你也正在找法文
+                        </p>
+                        <a class="reading-more" data-toggle="collapse" href="#collapseContent1" role="button" aria-expanded="false">閱讀更多</a>
+                    </div>
+                    <div class="col-4">
+                        <img class="reading-pic" src="~/Assets/img/延伸閱讀圖片2.jpg" alt="">
+                        <h5 class="reading-h5 m-0">【2021】上升星座運勢：安心之法與人生發展策略</h5>
+                        <span class="d-block reading-date my-2">Dec 30, 2020</span>
+                        <p class="reading-date mb-2 collapse" id="collapseContent2">
+                            面對 2020
+                            年的不確定性，很多人心中的不安全感越來越深重。星象雖然會影響人世間的吉凶禍福，斗轉星移所產生的外在事件，人類可能無法全然控制，但是你可以決定你的「心」要如何去應對未來
+                        </p>
+                        <a class="reading-more" data-toggle="collapse" href="#collapseContent2" role="button" aria-expanded="false">閱讀更多</a>
+                    </div>
+                    <div class="col-4">
+                        <img class="reading-pic" src="~/Assets/img/延伸閱讀圖片3.jpg" alt="">
+                        <h5 class="reading-h5 m-0">資深聲音培訓師周震宇 —— 聲音反映出人的內在，而溝通是一生的</h5>
+                        <span class="d-block reading-date my-2">Jan 8, 2021</span>
+                        <p class="reading-date mb-2 collapse" id="collapseContent3">
+                            「聲音反映出人的內在，而溝通是一生的自我覺察。」這是聲音訓練師周震宇亟欲傳達的核心概念。在聲波的交會當中，人們建立交集、共識，進而生長成為有意義的關係。你的每一次開口，也可
+                        </p>
+                        <a class="reading-more" data-toggle="collapse" href="#collapseContent3" role="button" aria-expanded="false">閱讀更多</a>
+                    </div>
+        </div>
+    </div>
+
+</div>
+<!-- 延伸閱讀 -->
+
+@section endJS{
+    @Scripts.Render("~/Assets/js/Owner.js")
+}

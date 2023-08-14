@@ -1,0 +1,949 @@
+﻿@*@model Tachey001.Models.Member*@
+@model Tachey001.ViewModel.Member.MemberGroup
+@Styles.Render("~/Assets/css/member.css")
+@Styles.Render("~/Assets/css/choice.css")
+@{
+    ViewBag.Title = "Setting"; Layout = "~/Views/Shared/_LayoutCreate.cshtml";
+}
+@{
+    Dictionary<string, string> link_corr = new Dictionary<string, string>();
+    link_corr.Add("個人喜好", "#likes-area");
+    link_corr.Add("職業行業", "#reg-lang-block");
+    link_corr.Add("個人興趣", "#likes-area");
+    link_corr.Add("所在地區", "#reg-lang-block");
+    link_corr.Add("性別生日", "#user-detail-basic-info");
+
+    Dictionary<int, int> progressbar = new Dictionary<int, int>();
+    progressbar.Add(5, 0);
+    progressbar.Add(4, 20);
+    progressbar.Add(3, 40);
+    progressbar.Add(2, 60);
+    progressbar.Add(1, 80);
+    progressbar.Add(0, 100);
+}
+@{
+    List<string> sexList = new List<string>();
+
+    sexList.Add("男");
+    sexList.Add("女");
+    sexList.Add("多元性別");
+}
+@{
+    // program bar
+    List<string> linek_lists = new List<string>();
+
+    foreach (var item in Model.memberViewModels)
+    {
+        if (item.Sex == null || item.Birthday == null)
+        {
+            linek_lists.Add("性別生日");
+        }
+        if (item.Profession == null)
+        {
+            linek_lists.Add("職業行業");
+        }
+        if (item.Interest == null)
+        {
+            linek_lists.Add("個人興趣");
+        }
+        if (item.Like == null)
+        {
+            linek_lists.Add("個人喜好");
+        }
+        if (item.CountryRegion == null)
+        {
+            linek_lists.Add("所在地區");
+        }
+    }
+}
+@{
+    var PhotoUrl = "https://lh3.googleusercontent.com/proxy/OXfpYhZBwg2BRO2Po_gPGwkVLmYVNowH3Va_q5fk62d0dNB9lusU3K79z8QihWT1BCr6XAHN_MaB1Ofw0GtaXjxEPx4HG22LLhAM1lGKRDQbQvkbYEM";
+    foreach (var i in Model.memberViewModels)
+    {
+        if (i.Photo != null)
+        {
+            PhotoUrl = i.Photo;
+        }
+    }
+
+}
+
+<div class="container">
+
+    <!-- 標題 -->
+    <div class="row">
+        <div class="col-xl">
+            <h1 class="text-center">
+                <span class="fa fa-gear fa-fw"></span>
+                帳號設定
+            </h1>
+        </div>
+    </div>
+
+    <!-- 內容 -->
+    <div class="row mt-5rem">
+
+        <!-- 左邊使用者資訊 -->
+        <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+            <div class="user-info">
+                <div class="border-setting">
+                    <div class="ta-l">
+                        <div class="profile-wrap pad-b-15 pad-t-60 text-center">
+                            <div class="border-circle" size="170">
+                                <a class="">
+                                    <!-- db edit -->
+                                    @foreach (var item in Model.memberViewModels)
+                                    {
+                                        <img src=@(item.Photo) class="user_img">
+                                    }
+                                    <!-- db edit -->
+                                </a>
+                            </div>
+                            <!-- db edit -->
+                            <h3 class="name text-center marg-tb-15 pad-rl-15">
+                                @foreach (var item in Model.memberViewModels)
+                                {
+                                    @(item.Name)
+                                }
+                            </h3>
+                            <!-- db edit -->
+                        </div>
+                        <div class="pad-rl-15 pad-tb-20 text-center">
+                            <button class="user-info-btn">@Html.ActionLink("修改個人檔案", "Profile", "Member", null, new { @class = "text-dark text-decoration-none" })</button>
+                            <div class="hint marg-t-10">修改個人檔案，讓大家更認識你吧！</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右邊資訊填寫 -->
+        <div class="col-xl form-wrap">
+            <!-- 個人資訊進度狀態 -->
+            <div class="info-state">
+                <div class="">
+                    <h4 id="">
+                        <div class="">
+                            <span>完成個人資訊，獲得生日優惠禮與更精準的課程推薦</span>
+                        </div>
+                    </h4>
+                    <div>
+                        <span class="todo-hint">還有這些資料未填寫：</span>
+                        @foreach (var item in linek_lists)
+                        {
+                            <a class="status" href=@(link_corr[item])>@(item)</a>
+                        }
+                        <!-- db edit -->
+                        @*<a class="status" href="#likes-area">個人喜好</a>
+                            <a class="status" href="#reg-lang-block">職業行業</a>
+                            <a class="status" href="#likes-area">個人興趣</a>
+                            <a class="status" href="#reg-lang-block">所在地區</a>
+                            <a class="status" href="#user-detail-basic-info">性別生日</a>*@
+                        <!-- db edit -->
+                    </div>
+
+                    <div class="progress-container">
+                        <!-- db edit -->
+                        <span>完成 @(progressbar[linek_lists.Count])%</span>
+                        <!-- db edit -->
+                        <div class="user-detail-progress-bar">
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(progressbar[linek_lists.Count])%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <img alt="完成個人資訊，獲得生日優惠禮與更精準的課程推薦！" src="https://i.pinimg.com/564x/db/e2/32/dbe232e9a7ffb009bec6b5a15af68c06.jpg">
+            </div>
+
+            <!-- 登入方式區塊 -->
+            <div class="border-setting sign-in">
+                <div class="ta-l">
+                    <div>
+                        <label for="account">
+                            登入方式
+                            <span data-tip="true" data-for="about-login"
+                                  aria-hidden="true" class="fa fa-question-circle"
+                                  currentitem="false"></span>
+                            <!-- 彈跳提示 -->
+                            <div class="type-dark" id="about-login" data-id="tooltip" style="left: 611px; top: 167px;">
+                                <span>你現有的登入方式</span>
+                            </div>
+                        </label>
+                        <div class="signin-way-block">
+                            @if (Enumerable.Count(Model.aspNetUserLogins) == 0)
+                            {
+                                <!-- Tachey -->
+                                <div class="local-bar marg-t-30 pad-b-30 clearfix">
+                                    <div class="left-block">
+                                        <div class="auth-provider-icon inline-block">
+                                            <img alt="icon" class="narrow-icon narrow-icon-tachey" src="https://i.imgur.com/CG3B9gp.jpg"><img alt="pic" class="profile-image" src=@(PhotoUrl) width="">
+                                        </div>
+                                        <h5 class="binded-account inline-block marg-l-25" style="color:black">
+                                            已建立帳號
+                                            @foreach (var j in Model.memberViewModels)
+                                            {
+                                                @(j.Email)
+                                            }
+                                        </h5>
+                                    </div>
+                                    @*<div class="right-block">
+                                            <div class="inline-block text-underline marg-r-5 link-gray ">
+                                                修改密碼
+                                            </div>
+                                        </div>
+                                        <div class="right-block mr-2">
+                                            <div class="inline-block text-underline marg-r-5 link-gray ">
+                                                帳號與個人網址
+                                            </div>
+                                        </div>*@
+                                </div>
+
+                                <!-- google -->
+                                <div class="google-bar marg-t-30 pad-b-30 clearfix">
+                                    <div class="left-block">
+                                        <div class="auth-provider-icon inline-block">
+                                            <img alt="icon" class="wide-icon" src="~/Assets/img/icon-google.svg">
+                                        </div>
+                                        <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                            未連結 Google 帳號
+                                        </h5>
+                                    </div>
+                                    @*<div class="right-block">
+                                            <div class="inline-block text-underline marg-r-5 link-gray ">
+                                                建立並連結帳號
+                                            </div>
+                                        </div>*@
+                                </div>
+
+                                <!-- facebook -->
+                                <div class="facebook-bar marg-t-30 pad-b-30 clearfix">
+                                    <div class="left-block">
+                                        <div class="auth-provider-icon inline-block">
+                                            <img alt="icon" class="wide-icon" src="~/Assets/img/icon-fb.png" />
+                                        </div>
+                                        <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                            未連結 Facebook 帳號
+                                        </h5>
+                                    </div>
+                                    @*<div class="right-block">
+                                            <div class="inline-block text-underline marg-r-5 link-gray">
+                                                前往連結帳號
+                                            </div>
+                                        </div>*@
+                                </div>
+
+                                <!-- line -->
+                                <div class="line-bar marg-t-30 pad-b-30 clearfix">
+                                    <div class="left-block">
+                                        <div class="auth-provider-icon inline-block">
+                                            <img alt="icon" class="wide-icon" src="~/Assets/img/icon-line.svg">
+                                        </div>
+                                        <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                            未連結 LINE 帳號
+                                        </h5>
+                                    </div>
+                                    @*<div class="right-block text-right">
+                                            <div class="inline-block text-underline marg-r-5 link-gray text-right">
+                                                前往連結帳號
+                                            </div>
+                                        </div>*@
+                                </div>
+                            }
+
+                            @foreach (var item in Model.aspNetUserLogins)
+                            {
+                                <!-- Tachey -->
+                                <div class="local-bar marg-t-30 pad-b-30 clearfix">
+                                    <div class="left-block">
+                                        <div class="auth-provider-icon inline-block">
+                                            <img alt="icon" class="wide-icon icon-tachey" src="https://i.imgur.com/CG3B9gp.jpg" />
+                                        </div>
+                                        <h5 class="unbinded-account inline-block marg-l-25 " style="color:black">
+                                            未建立 Tachey 帳號
+                                        </h5>
+                                    </div>
+                                    @*<div class="right-block">
+                                            <div class="inline-block text-underline marg-r-5 link-gray ">
+                                                建立並連結帳號
+                                            </div>
+                                        </div>*@
+                                </div>
+
+                                <!-- google -->
+                                <div class="google-bar marg-t-30 pad-b-30 clearfix">
+                                    @if (item.LoginProvider != "Google")
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="wide-icon" src="~/Assets/img/icon-google.svg">
+                                            </div>
+                                            <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                                未連結 Google 帳號
+                                            </h5>
+                                        </div>
+                                        @*<div class="right-block">
+                                                <div class="inline-block text-underline marg-r-5 link-gray ">
+                                                    建立並連結帳號
+                                                </div>
+                                            </div>*@
+                                    }
+                                    else
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="narrow-icon" src="~/Assets/img/icon-google-half.svg"><img alt="pic" class="profile-image" src=@(PhotoUrl) width="">
+                                            </div>
+                                            <h5 class="binded-account inline-block marg-l-25" style="color:black">
+                                                已建立帳號
+                                                @foreach (var j in Model.memberViewModels)
+                                                {
+                                                    @(j.Email)
+                                                }
+                                            </h5>
+                                        </div>
+                                        <!--<div class="right-block">
+                                            <div>
+                                                <div class="inline-block marg-r-5 unclickable-text" data-for="unbinding" data-tip="如欲取消<br />請先連結其他登入方式" currentitem="false">
+                                                    取消連結
+                                                </div>-->
+                                        <!-- 彈跳提示 -->
+                                        <!--<div class="type-dark" id="unbinding" data-id="tooltip"></div>
+                                            </div>
+                                        </div>-->
+                                    }
+                                </div>
+
+                                <!-- facebook -->
+                                <div class="facebook-bar marg-t-30 pad-b-30 clearfix">
+                                    @if (item.LoginProvider != "Facebook")
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="wide-icon" src="~/Assets/img/icon-fb.png" />
+                                            </div>
+                                            <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                                未連結 Facebook 帳號
+                                            </h5>
+                                        </div>
+                                        @*<div class="right-block">
+                                                <div class="inline-block text-underline marg-r-5 link-gray">
+                                                    前往連結帳號
+                                                </div>
+                                            </div>*@
+                                    }
+                                    else
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="narrow-icon" src="~/Assets/img/icon-fb-half.png"><img alt="pic" class="profile-image" src=@(PhotoUrl) width="">
+                                            </div>
+                                            <h5 class="binded-account inline-block marg-l-25" style="color:black">
+                                                已建立帳號
+                                                @foreach (var j in Model.memberViewModels)
+                                                {
+                                                    @(j.Email)
+                                                }
+                                            </h5>
+                                        </div>
+                                        <!--<div class="right-block">
+                                            <div>
+                                                <div class="inline-block marg-r-5 unclickable-text" data-for="unbinding" data-tip="如欲取消<br />請先連結其他登入方式" currentitem="false">
+                                                    取消連結
+                                                </div>-->
+                                        <!-- 彈跳提示 -->
+                                        <!--<div class="type-dark" id="unbinding" data-id="tooltip"></div>
+                                            </div>
+                                        </div>-->
+                                    }
+                                </div>
+
+                                <!-- line -->
+                                <div class="line-bar marg-t-30 pad-b-30 clearfix">
+                                    @if (item.LoginProvider != "Line")
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="wide-icon" src="~/Assets/img/icon-line.svg">
+                                            </div>
+                                            <h5 class="unbinded-account inline-block marg-l-25" style="color:black">
+                                                未連結 LINE 帳號
+                                            </h5>
+                                        </div>
+                                        @*<div class="right-block text-right">
+                                                <div class="inline-block text-underline marg-r-5 link-gray text-right">
+                                                    前往連結帳號
+                                                </div>
+                                            </div>*@
+                                    }
+                                    else
+                                    {
+                                        <div class="left-block">
+                                            <div class="auth-provider-icon inline-block">
+                                                <img alt="icon" class="narrow-icon" src="~/Assets/img/icon-line-half.png"><img alt="pic" class="profile-image" src=@(PhotoUrl) width="">
+                                            </div>
+                                            <h5 class="binded-account inline-block marg-l-25" style="color:black">
+                                                已建立帳號
+                                                @foreach (var j in Model.memberViewModels)
+                                                {
+                                                    @(j.Email)
+                                                }
+                                            </h5>
+                                        </div>
+                                        <!--<div class="right-block">
+                                            <div>
+                                                <div class="inline-block marg-r-5 unclickable-text" data-for="unbinding" data-tip="如欲取消<br />請先連結其他登入方式" currentitem="false">
+                                                    取消連結
+                                                </div>-->
+                                        <!-- 彈跳提示 -->
+                                        <!--<div class="type-dark" id="unbinding" data-id="tooltip"></div>
+                                            </div>
+                                        </div>-->
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                    <!-- email -->
+                    @*<form novalidate="" class="email-form pad-t-30" name="emailForm">
+                            <label for="email">
+                                電子信箱
+                                <span data-tip="true" data-for="verify-email" aria-hidden="true" class="fa fa-question-circle" currentitem="false"></span>-->
+                                <!-- 彈跳提示 -->
+                                <!--<div class="type-dark" id="verify-email" data-id="tooltip">
+                                    <span>驗證信箱，讓 Tachey 帶給你更完整的體驗。</span>
+                                </div>
+                            </label>
+                            @foreach (var item in Model.memberViewModels)
+                            {
+
+
+                                <div class="flex">
+                                    <div class="email-input">
+                                        <div class="flex">
+                                            <input placeholder="信箱" type="email" class="mail-input" value=@(item.Email)>
+                                        </div>
+                                    </div>
+
+                                    @if (item.EmailStatus == null || item.EmailStatus == false)
+                                    {
+                                        <button class="verification-btn">
+                                            <div>
+                                                <span aria-hidden="true" class="fas fa-envelope"></span>&nbsp;驗證&nbsp;
+                                            </div>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button disabled class="verification-btn-disable">
+                                            &nbsp;已驗證&nbsp;
+                                        </button>
+                                    }
+
+
+                                </div>
+                            }
+                        </form>*@
+                </div>
+            </div>
+
+            <!-- 使用者個資填寫 -->
+            @using (Html.BeginForm("SettingIndex", "Member", FormMethod.Post))
+            {
+                <div id="user-detail-basic-info">
+                    <div class="info-block border-setting pad-t-30 pad-b-45 pad-rl-60">
+                        <div class="ta-l">
+                            <div class="info-sub-block">
+                                <!-- 性別 -->
+                                <!-- db edit -->
+                                <div class="">
+                                    <label>性別</label>
+                                    @foreach (var j in Model.memberViewModels)
+                                    {
+                                        foreach (var item in sexList)
+                                        {
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                                    @if (j.Sex == item)
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.member.Sex, $"{item}", new { @class = "form-check-input", @checked = "checked" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.RadioButtonFor(m => m.member.Sex, $"{item}", new { @class = "form-check-input" })
+                                                    }
+                                                    @item
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                                <!-- 生日 -->
+                                <div class="marg-t-15 birthday-wrap clearfix">
+                                    <label for="birthday">生日</label>
+                                    <div class="date-wrap">
+                                        @foreach (var i in Model.memberViewModels)
+                                        {
+                                            @Html.DropDownList("year", (IEnumerable<SelectListItem>)ViewBag.ListYear, i.Year, new { @name = "year", @class = "bday-year" })
+                                        }
+
+                                        <span class="marg-rl-5">年</span>
+                                        @foreach (var i in Model.memberViewModels)
+                                        {
+                                            @Html.DropDownList("month", (IEnumerable<SelectListItem>)ViewBag.ListMonth, i.Month, new { @name = "month", @class = "bday-month" })
+                                        }
+
+                                        <span class="marg-rl-5">月</span>
+                                        @foreach (var i in Model.memberViewModels)
+                                        {
+                                            @Html.DropDownList("date", (IEnumerable<SelectListItem>)ViewBag.ListDay, i.Day, new { @name = "date", @class = "bday-day" })
+                                        }
+
+
+                                        <span class="marg-rl-5">日</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="marg-t-30">
+                                <p class="hint">*性別與生日儲存後將無法修改，請確認資料是否正確</p>
+                                @foreach (var item in Model.memberViewModels)
+                                {
+                                    if (item.Sex != null)
+                                    {
+                                        <button class="close-click-btn save-basic-info-btn" disabled="">儲存</button>
+                                    }
+                                    else
+                                    {
+                                        <button id="close-click-btn" class="close-click-btn save-basic-info-btn" disabled="">儲存</button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- 地區語言區塊 -->
+            <div class="border-setting reg-lang-block" id="reg-lang-block">
+                <div class="ta-l">
+                    <p>完成以下個人資訊，可以幫助你獲得更加適合且符合期待的課程資訊。</p>
+                    <label class="marg-t-30" id="user-detail-occupations">職業行業（選擇主要收入來源最相關的最多 3 個行業）</label>
+                    <!--<div class="relative inline-block">
+                        <div class="mask pseudo-btn absolute"></div>
+                    </div>-->
+                    <button class="oval-btn-plus-text oval-btn" id="user-pseudo-btn">+</button>
+                    <!-- 彈跳視窗-職業行業 -->
+                    <div>
+                        <div class="overlay-jobs lecture-editor-no-clickoutside undefined"
+                             style="z-index: 10130; align-items: unset; padding: 50px 15px 15vh; margin: -1px; display: none;">
+                            <div class="overlay-jobs-modal"
+                                 style="z-index: 10135; margin: auto; padding: 0px; width: 800px; height: unset; min-width: unset; max-width: unset; border-radius: 5px; background: white;">
+                                <h4 class="overlay-jobs-block pad-tb-15 text-center">
+                                    <div class="jobs-title">
+                                        職業行業<span class="">
+                                            （選擇主要收入來源最相關的最多
+                                            3 個行業）
+                                        </span>
+                                    </div>
+                                </h4>
+                                <div overflow="unset" class="overlay-jobs-size">
+                                    <div class="jobs-btn-group">
+                                        @foreach (var i in ViewBag.jobList)
+                                        {
+                                            foreach (var j in Model.memberViewModels)
+                                            {
+                                                if (j.Profession != null)
+                                                {
+                                                    if (Array.IndexOf(j.Profession.Split('/'), i) != -1)
+                                                    {
+                                                        <span class="jobs-btn-checked toggle-btn-job marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="jobs-btn toggle-btn-job marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="jobs-btn toggle-btn-job marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+                                                }
+                                            }
+
+
+                                        }
+
+                                        <div class="text-center marg-t-50 confirm">
+                                            <button disabled=""
+                                                    class="confirm-btn">
+                                                確認
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><button class="close-button">
+                                    <svg class=""
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="25" height="25"
+                                         viewBox="0 0 36 36"
+                                         style="top: 9px; right: 9px; fill: rgba(0, 0, 0, 0.65); z-index: 2;">
+                                        <path d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 彈跳視窗-職業行業 -->
+
+                    @using (Html.BeginForm("SettingComm", "Member", FormMethod.Post))
+                    {
+                        <div class="marg-t-30">
+                            <label> 所在地區 </label>
+                            @foreach (var i in Model.memberViewModels)
+                            {
+                                @Html.DropDownList("area", (IEnumerable<SelectListItem>)ViewBag.SelectListArea, i.CountryRegion, new { @name = "area", @class = "reg-ddlist text-left" })
+                            }
+                        </div>
+
+                        <div class="marg-t-20">
+                            <label> 顯示語言 </label>
+                            @foreach (var i in Model.memberViewModels)
+                            {
+                                @Html.DropDownList("lang", (IEnumerable<SelectListItem>)ViewBag.SelectListLang, i.Language, new { @name = "lang", @class = "reg-ddlist text-left" })
+                            }
+                        </div>
+                        <div class="marg-t-30">
+
+                            <button class="close-click-btn save-basic-info-btn">儲存</button>
+
+                        </div>
+                    }
+                    <p class="hint marg-t-40 marg-b-0">
+                        我們十分重視會員資料安全性，請注意 Tachey
+                        不會將你的個人資料交換、販售給第三方單位作為廣告使用，你可以隨時更改會員資訊，完整會員資訊使用方式請見
+                        <a class="link-primary marg-l-10"
+                           href="https://hahow.in/privacy"
+                           rel="noopener noreferrer" target="_blank">
+                            隱私權政策
+                        </a>。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 興趣與喜好 -->
+            <div class="border-setting likes-area mb-5" id="likes-area">
+                <div class="ta-l">
+                    <!--<p>你的興趣與喜好是什麼呢！？我們將根據以下資訊，提供生日優惠禮以及更加適合你的課程推薦。</p>
+                    <label class="marg-t-30" id="user-detail-interests-tags">個人興趣（多選）</label>-->
+                    <!-- <div class="relative inline-block">
+                            <div class="mask pseudo-btn absolute"></div>
+                    </div> -->
+                    <!--<button class="oval-btn-plus-text oval-btn" id="user-interest-btn">+</button>-->
+                    <!-- 彈跳視窗-我的興趣 -->
+                    <!--<div>
+                    <div class="overlay-interest" style=" display: none;">
+                        <div class="overlay-interest-modal">
+                            <h4 class="overlay-interest-h4 pad-tb-15 text-center">
+                                我的興趣（多選）
+                            </h4>
+                            <div overflow="unset"
+                                 class="overlay-interest-block">
+                                <div class="overlay-interest-size flex-column relative">
+                                    <div class="selected-items-bar">
+                                        <span class="description inline-block text-bold marg-t-10 marg-b-20">已選興趣：</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div>-->
+                    <!-- first row -->
+                    <!--<div class="categories-wrap flex ">
+                        @*@{int count = 0;}
+                        @foreach (var i in Model.courseViewModels.courseCategory)
+                        {
+
+                            if (count >= 4)
+                            {
+                                break;
+                            }
+                            <div class="kind-btn category flex-column align-items-center justify-center inline-block pseudo-btn toggle-btn-interest-first" id=@(count)>
+                                <img alt="Category icon" class="block" src="/Assets/img/@(i.CategoryName).svg">
+                                <span class="block">@i.CategoryName</span>
+                            </div>
+                            count++;
+                        }*@
+
+                    </div>
+                    <div class="interval toggle toggle-first">
+                        <div class="items-wrap text-center pad-tb-20 pad-rl-30">
+
+                            @*@{count = 0;}
+                            @foreach (var i in ViewBag.interestDetil)
+                            {
+                                if (count < 4)
+                                {
+                                    <span class="text-bold text-center toggle" id=title_@(count)>@i.Key</span>
+                                    foreach (var j in i.Value)
+                                    {
+                                        foreach (var k in Model.memberViewModels)
+                                        {
+                                            if (k.Interest != null)
+                                            {
+                                                if (Array.IndexOf(k.Interest.Split('/'), j) != -1)
+                                                {
+                                                    <span class="intervals-btn-checked toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                            }
+                                        }
+
+                                    }
+                                }
+                                count++;
+
+                            }*@
+                        </div>
+                    </div>-->
+                    <!-- second row -->
+                    <!--<div class="categories-wrap flex ">
+                        @*@{count = 0;}
+                        @foreach (var i in Model.courseViewModels.courseCategory)
+                        {
+                            if (count > 3 && count <= 7)
+                            {
+                                <div class="kind-btn category flex-column align-items-center justify-center inline-block pseudo-btn toggle-btn-interest-second" id=@(count)>
+                                    <img alt="Category icon" class="block" src="/Assets/img/@(i.CategoryName).svg">
+                                    <span class="block">@i.CategoryName</span>
+                                </div>
+                            }
+                            count++;
+                        }*@
+
+                    </div>
+                    <div class="interval toggle toggle-second">
+                        <div class="items-wrap text-center pad-tb-20 pad-rl-30">
+                            @*@{count = 0;}
+                            @foreach (var i in ViewBag.interestDetil)
+                            {
+                                if (count > 3 && count <= 7)
+                                {
+                                    <span class="text-bold text-center toggle" id=title_@(count)>@i.Key</span>
+                                    foreach (var j in i.Value)
+                                    {
+                                        foreach (var k in Model.memberViewModels)
+                                        {
+                                            if (k.Interest != null)
+                                            {
+                                                if (Array.IndexOf(k.Interest.Split('/'), j) != -1)
+                                                {
+                                                    <span class="intervals-btn-checked toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                            }
+                                        }
+
+                                    }
+                                }
+                                count++;
+
+                            }*@
+                        </div>
+                    </div>-->
+                    <!-- third row -->
+                    <!--<div class="categories-wrap flex ">
+                                                    @*@{count = 0;}
+                                                    @foreach (var i in Model.courseViewModels.courseCategory)
+                                                    {
+
+                                                        if (count > 7)
+                                                        {
+                                                            <div class="kind-btn category flex-column align-items-center justify-center inline-block pseudo-btn toggle-btn-interest-third" id=@(count)>
+                                                                <img alt="Category icon" class="block" src="/Assets/img/@(i.CategoryName).svg">
+                                                                <span class="block">@i.CategoryName</span>
+                                                            </div>
+                                                        }
+
+                                                        count++;
+                                                    }
+                                                </div>
+                                                <div class="interval toggle toggle-third">
+                                                    <div class="items-wrap text-center pad-tb-20 pad-rl-30">
+                                                        @{count = 0;}
+                                                        @foreach (var i in ViewBag.interestDetil)
+                                                        {
+                                                            if (count > 7)
+                                                            {
+                                                                <span class="text-bold text-center toggle" id=title_@(count)>@i.Key</span>
+                                                                foreach (var j in i.Value)
+                                                                {
+                                                                    foreach (var k in Model.memberViewModels)
+                                                                    {
+                                                                        if (k.Interest != null)
+                                                                        {
+                                                                            if (Array.IndexOf(k.Interest.Split('/'), j) != -1)
+                                                                            {
+                                                                                <span class="intervals-btn-checked toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="intervals-btn toggle-btn-interval marg-t-10 marg-r-10 text-center toggle dat_@count" role="button">@j</span>
+                                                                        }
+                                                                    }
+
+
+                                                                }
+                                                            }
+                                                            count++;
+
+                                                        }*@
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="confirm marg-t-30">
+                                            <button disabled=""
+                                                    class="confirm-btn">
+                                                確認
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><button class="close-button">
+                                    <svg class=""
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="25" height="25"
+                                         viewBox="0 0 36 36"
+                                         style="top: 9px; right: 9px; fill: rgba(0, 0, 0, 0.65); z-index: 2;">
+                                        <path d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>-->
+                    @Html.Partial("_ChoiceCardPartial")
+                    <!-- 彈跳視窗-我的興趣 -->
+
+                    <label class="marg-t-30" id="user-detail-recreations">其他個人喜好（多選）</label>
+                    <!-- <div class="relative inline-block">
+                            <div class="mask pseudo-btn absolute"></div>
+                    </div> -->
+                    <button class="oval-btn-plus-text oval-btn" id="user-like-btn">+</button>
+                    <!-- 彈跳視窗-其他個人喜好 -->
+                    <div>
+                        <div class="overlay-likes lecture-editor-no-clickoutside undefined"
+                             style="z-index: 10130; align-items: unset; padding: 50px 15px 15vh; display: none">
+                            <div class="overlay-likes-modal"
+                                 style="z-index: 10135; margin: auto; padding: 0px; width: 800px; height: unset; min-width: unset; max-width: unset; border-radius: 5px; background: white;">
+                                <h4 class="overlay-likes-h4 pad-tb-15 text-center">
+                                    其他個人喜好（多選）
+                                </h4>
+                                <div overflow="hidden" class="overlay-likes-block">
+                                    <div class="overlay-likes-size">
+                                        @foreach (var i in ViewBag.likeList)
+                                        {
+                                            foreach (var j in Model.memberViewModels)
+                                            {
+                                                if (j.Like != null)
+                                                {
+                                                    if (Array.IndexOf(j.Like.Split('/'), i) != -1)
+                                                    {
+                                                        <span class="likes-btn-checked toggle-btn-like marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="likes-btn toggle-btn-like marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="likes-btn toggle-btn-like marg-t-20 marg-r-10 inline-block text-center" role="button">@i</span>
+                                                }
+                                            }
+                                        }
+
+                                        <div class="text-center marg-t-50 confirm">
+                                            <button disabled=""
+                                                    class="confirm-btn">
+                                                確認
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><button class="close-button">
+                                    <svg class=""
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="25" height="25"
+                                         viewBox="0 0 36 36"
+                                         style="top: 9px; right: 9px; fill: rgba(0, 0, 0, 0.65); z-index: 2;">
+                                        <path d="M28.5 9.62L26.38 7.5 18 15.88 9.62 7.5 7.5 9.62 15.88 18 7.5 26.38l2.12 2.12L18 20.12l8.38 8.38 2.12-2.12L20.12 18z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 彈跳視窗-其他個人喜好 -->
+
+                    <p class="hint marg-t-40 marg-b-0">
+                        我們十分重視會員資料安全性，請注意 Tachey
+                        不會將你的個人資料交換、販售給第三方單位作為廣告使用，你可以隨時更改會員資訊，完整會員資訊使用方式請見
+                        <a class="link-primary marg-l-10"
+                           href="https://hahow.in/privacy"
+                           rel="noopener noreferrer" target="_blank">
+                            隱私權政策
+                        </a>。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 轉移課程 -->
+            @*<div class="border-setting transfer-course">
+                    <div class="ta-l">
+                        <p class="inline-block">
+                            申請轉移課程｜欲申請轉移請先閱讀
+                            <a class="link-primary text-bold text-underline marg-l-10"
+                               href="https://goo.gl/PRNcYR" rel="noopener noreferrer"
+                               target="_blank">操作方式</a>
+                        </p>
+                        <div>
+                            <a class="link-gray text-bold text-underline marg-r-25"
+                               href="https://goo.gl/PRNcYR" rel="noopener noreferrer"
+                               target="_blank">填表申請</a>
+                        </div>
+                    </div>
+                </div>*@
+
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Assets/js/member.js")
+@Scripts.Render("~/Assets/js/choice.js")

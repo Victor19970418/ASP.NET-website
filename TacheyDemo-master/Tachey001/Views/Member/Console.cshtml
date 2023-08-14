@@ -1,0 +1,72 @@
+﻿@model Tachey001.ViewModel.consoleallViewModel
+@{
+    ViewBag.Title = "我的課程紀錄";
+    Layout = "~/Views/Shared/_LayoutCreate.cshtml";
+}
+
+@section topCSS{
+    @Styles.Render("~/Assets/css/console.css")
+    @Styles.Render("~/Assets/css/nav.css")
+    @Styles.Render("~/Assets/css/navbar-blue.css")
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center mt-5">
+            <h3 class="text-white">我的課程紀錄</h3>
+        </div>
+        <div class="col-12 text-center my-3">
+            <img src="~/Assets/img/space.png"
+                 alt=""
+                 class="rounded-circle w-100p" />
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 p-0">
+            <h4 class="text-white">我開的課</h4>
+        </div>
+        <div class="col-12 border-bottom my-4"></div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model.allCourses)
+        {
+            @Html.Partial("CreateCardTemplate", item)
+        }
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 p-0">
+            <h4 class="text-white">我修的課</h4>
+        </div>
+        <div class="col-12 border-bottom my-4"></div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model.consoleViews1)
+        {
+            @Html.Partial("CardTemplate", item)
+        }
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 p-0">
+            <h4 class="text-white">我收藏的課</h4>
+        </div>
+        <div class="col-12 border-bottom my-4"></div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model.consoleViews)
+        {
+            foreach (var o in Model.GetOwners)
+            {
+                if (o.MemberID == ViewBag.UserId && item.CourseID==o.CourseID)
+                {
+                    item.favorite = true;
+                    @Html.Partial("CardTemplate", item)
+                }
+            }
+        }
+    </div>
+</div>
+
+@section endJS{
+    @Scripts.Render("~/Assets/js/Owner.js")
+}

@@ -1,0 +1,249 @@
+﻿
+@{
+    ViewData["Title"] = "會員管理";
+}
+
+
+<div id="app">
+    <h2><b-badge variant="secondary">會員管理</b-badge></h2>
+    <b-container fluid>
+        <!-- User Interface controls -->
+        <b-row>
+            <b-col lg="6" class="my-1">
+                <b-form-group label="Filter"
+                              label-for="filter-input"
+                              label-cols-sm="1"
+                              @*label-align-sm="right"*@
+                              label-size="sm"
+                              class="mb-0 ">
+                    <b-input-group size="sm">
+                        <b-form-input id="filter-input"
+                                      v-model="filter"
+                                      type="search"
+                                      placeholder="Type to Search"></b-form-input>
+
+                        <b-input-group-append>
+                            <b-button :disabled="!filter" v-on:click="filter = ''">Clear</b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </b-form-group>
+            </b-col>
+
+            <b-col sm="5" md="6" class="my-1">
+                <b-form-group label="Per page" label-for="per-page-select" label-cols-sm="6" label-cols-md="4"
+                              label-cols-lg="3" label-align-sm="right" label-size="sm" class="mb-0">
+                    <b-form-select id="per-page-select" v-model="perPage" :options="pageOptions" size="sm">
+                    </b-form-select>
+                </b-form-group>
+            </b-col>
+
+
+
+        </b-row>
+
+        <!-- Main table element -->
+        <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter"
+                 :filter-included-fields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"
+                 :sort-direction="sortDirection" stacked="md" show-empty small v-on:filtered="onFiltered">
+
+
+            <template #cell(actions)="row">
+                <b-button size="sm" v-on:click="info(row.item, row.index, $event.target)" class="mr-1">
+                    Info modal
+                </b-button>
+                <b-button size="sm" v-on:click="row.toggleDetails">
+                    {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+                </b-button>
+            </template>
+
+            <template #row-details="row">
+                <b-card>
+                    <ul>
+                        <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
+                    </ul>
+                </b-card>
+            </template>
+        </b-table>
+
+        <!-- Info modal -->
+        <b-modal :id="infoModal.id" :title="infoModal.title" ok-only v-on:hide="resetInfoModal">
+            <pre>{{ infoModal.content }}</pre>
+        </b-modal>
+        <div class="row">
+            <b-col sm="7" md="6" class="my-1">
+                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill"
+                              size="sm" class="my-0"></b-pagination>
+            </b-col>
+        </div>
+    </b-container>
+</div>
+
+@section endJS{
+
+    <script>
+
+            let app = new Vue({
+                el: '#app',
+                data: {
+                   items:@Html.Raw(ViewBag.jsonString),
+                   fields: [
+                       { key: 'Name', label: 'Name', sortable: true, sortDirection: 'desc' },
+                       { key: 'MemberID', label: 'MemberId', sortable: true, sortDirection: 'desc' },
+                       { key: 'Email', label: 'Email', sortable: true, sortDirection: 'desc'},
+                       { key: 'CountryRegion', label: 'CountryRegion', sortable: true, sortDirection: 'desc'},
+                       { key: 'City', label: 'City', sortable: true, sortDirection: 'desc'},
+                       { key: 'JoinTime', label: 'City', sortable: true, sortDirection: 'desc'},
+                    ],
+                    totalRows: 1,
+                    currentPage: 1,
+                    perPage: 5,
+                    pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+                    sortBy: '',
+                    sortDesc: false,
+                    sortDirection: 'asc',
+                    filter: null,
+                    filterOn: [],
+                    infoModal: {
+                        id: 'info-modal',
+                        title: '',
+                        content: ''
+                    }
+                },
+                computed: {
+                    sortOptions() {
+                        // Create an options list from our fields
+                        return this.fields
+                            .filter(f => f.sortable)
+                            .map(f => {
+                                return { text: f.label, value: f.key }
+                            })
+                    }
+                },
+                create (){
+                    this.getData()
+                },
+
+                mounted() {
+                    this.getData()
+                    this.totalRows = this.items.length
+                    // Set the initial number of items
+
+                },
+                methods: {
+                    info(item, index, button) {
+                        this.infoModal.title = `Row index: ${index}`
+                        this.infoModal.content = JSON.stringify(item, null, 2)
+                        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+                    },
+                    resetInfoModal() {
+                        this.infoModal.title = ''
+                        this.infoModal.content = ''
+                    },
+                    onFiltered(filteredItems) {
+                        // Trigger pagination to update the number of buttons/pages due to filtering
+                        this.totalRows = filteredItems.length
+                        this.currentPage = 1
+                    },
+                    getData() {
+                        var that = this;
+                        $.ajax({
+                            url: 'https://localhost:44363/members/orderdata',
+                            type: "POST",
+                            success: function (returnData) {
+                                that.items = JSON.parse(returnData)
+                                console.warn(returnData)
+                            }
+
+                        })
+                    }
+
+                }
+            });
+    </script>
+}
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmailConfirmed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PasswordHash)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SecurityStamp)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LockoutEndDateUtc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LockoutEnabled)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccessFailedCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PasswordHash)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecurityStamp)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LockoutEndDateUtc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LockoutEnabled)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccessFailedCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

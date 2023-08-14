@@ -1,0 +1,155 @@
+﻿@using TacheyDashboard.ViewModel.Home;
+@{
+    ViewData["Title"] = "Tachey - 儀錶板";
+    var totaldata = ViewData["TotalData"] as TotalData;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="container-fluid px-4">
+            <div class="row mt-3">
+                <!-- Earnings Card for Success -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2" style="border-left: 5px #FFAC55 solid;">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2 ml-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        平台總營收概況
+                                    </div>
+                                    <div id="success_funding_summary" class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @String.Format("{0:$#,0}", totaldata.OrderPrices)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings Card Total -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2" style="border-left: 5px #FFAC55 solid;">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2 ml-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        訂單總數
+                                    </div>
+                                    <div id="account_Total" class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @String.Format("{0:#,0}", totaldata.OrderCount)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Projects Percentage -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2" style="border-left: 5px #FFAC55 solid;">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2 ml-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        會員總數
+                                    </div>
+                                    <div id="account_Total" class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @String.Format("{0:#,0}", totaldata.MemberNum)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Indemmand -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2" style="border-left: 5px #FFAC55 solid;">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2 ml-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        開課總數
+                                    </div>
+                                    <div id="pending_projects_count" class="h5 mb-0 font-weight-bold text-gray-800">
+                                        @String.Format("{0:#,0}", totaldata.Categories)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">訂單銷售成長</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="OrderLineChart" width="100%" height="40"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">會員數成長</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="MemberLineChart" width="100%" height="40"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">開課種類分布</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="peiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">當月銷售排名 TOP 5</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-stats order-table ov-h" id="app">
+                                <template>
+                                    <div>
+                                        <b-table striped hover :items="items"></b-table>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+}
+
+@section endJS{
+    @*<script src="~/js/Utility.js"></script>*@
+    <script src="~/js/Colors.js"></script>
+    <script src="~/js/DoughnutText.js"></script>
+    <script src="~/js/PieChart.js"></script>
+    <script src="~/js/BarChart.js"></script>
+    <script src="~/js/LineChart.js"></script>
+
+    <!-- Required Stylesheets -->
+
+    <!-- Required scripts -->
+    <script src="~/js/HomeChart.js"></script>
+} 

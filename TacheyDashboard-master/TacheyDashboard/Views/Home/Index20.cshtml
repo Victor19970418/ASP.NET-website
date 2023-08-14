@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Tachey001.ViewModel.Course.AllCourse>
+
+@{
+    ViewData["Title"] = "Index20";
+}
+
+<h1>Index20</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TitlePageImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MarketingImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tool)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Effect)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoursePerson)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OriginalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PreOrderPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMinTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LecturerIdentity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryDetailsId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateFinish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateVerify)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PreviewVideo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainClick)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomClick)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitlePageImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarketingImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tool)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Effect)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoursePerson)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OriginalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PreOrderPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMinTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Introduction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LecturerIdentity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryDetailsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateFinish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateVerify)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PreviewVideo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainClick)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomClick)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

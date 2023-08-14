@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "CourseCard";
+    Layout = "~/Views/Shared/_LayoutCreate.cshtml";
+}
+
+
+<h2 class="text-white">雲端資料:</h2>
+
+<button onclick="StartProcess()" type="button" class="btn btn-primary btn-success">測試</button>
+
+<div class="progress">
+    <div id="ProgressMessage" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+</div>
+
+<script>
+    //CALLING METHOD IN THE CONTROLLER TO DO SOME WORK
+    function StartProcess() {
+
+        $.getJSON("/Home/LongRunningProcess",
+            {},
+            function (data) {
+                if (!data) {
+                    console.log("Success");
+                }
+                else {
+                    alert(data);
+                }
+            });
+    }
+
+</script>

@@ -1,0 +1,122 @@
+body {
+  background-color: rgb(243, 243, 241);
+  color:white;
+}
+
+.hahow-green {
+    color: rgb(233 229 77);
+}
+
+a.hahow-green:hover {
+    color: rgb(146 197 129);
+}
+
+.btn-hahow {
+    background-color: rgb(27 47 45);
+    color: #fff;
+}
+
+    .btn-hahow:hover {
+        color: black;
+        background-color: rgb(255 235 0);
+    }
+
+.btn-facebook {
+  background-color: rgb(60, 90, 153);
+  color: #fff;
+}
+
+.btn-facebook:hover {
+  background-color: rgb(33, 62, 126);
+  color: #fff;
+}
+
+.center {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.photoImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.photo-Img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+}
+
+.border-hahow {
+    border-bottom: 4px solid #FFEB00;
+    
+}
+
+.col-cus {
+  width: 5%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.imgPhotoCover {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+.friend-talk {
+  border: 5px solid #bbb;
+  border-top: 0px;
+}
+
+.imgPhoto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.btn-outline-hahow {
+  color: #777;
+  border: 1px solid #777;
+}
+
+    .btn-outline-hahow:hover {
+        color: rgb(11 19 18);
+    }
+
+.card {
+  border: 5px solid #ccc;
+  overflow: visible !important;
+}
+
+.btn-link {
+  top: -20px;
+  background-color: white;
+  width: 40%;
+  height: 30px;
+}
+
+.h-0 {
+  height: 0;
+}
+
+.border-lg{
+  border-left: 2px solid #ccc;
+}
+.bg-know {
+    /*background-color: rgb(255 255 255 / 86%);*/
+    background: linear-gradient( 40deg, rgb(86 86 192) 0%, rgb(119 79 165) 100%)
+}
